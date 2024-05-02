@@ -7,9 +7,25 @@ import random
 
 from lib import priorize
 
-COMMAND_ALIASES = {
-    "priorize": ["p", "prio"],
+COMMANDS = {
+    "priorize": {
+        "aliases": ["p", "prio"],
+        "short_help": "Pick things to do based on priorities set",
+    },
+    "edit": {
+        "aliases": ["e"],
+        "short_help": "Edit a data file contained in the assistant data dir",
+    },
 }
+
+def get_command(raw):
+    if raw in COMMANDS:
+        return raw
+    else:
+        for cmd, data in COMMANDS.items():
+            if raw in data["aliases"]:
+                return cmd
+        return None
 
 class Assistant:
     def __init__(self, data_dir = None):
@@ -20,9 +36,12 @@ class Assistant:
             )
         self.data_dir = data_dir
 
-    def act(self, command, args, verbose = False):
-        if command == "priorize":
-            fname = self.get_fname_from_args(args, 0, "priorize")
+    def priorize(self, fname, *a, verbose = False, **k):
+            if not os.path.isfile(fname):
+                print("File does not exist")
+                print(f"It should exist at {fname}")
+                return
+
             pick = priorize.PrioPick()
             k = pick.import_file(fname)
             if verbose:
@@ -32,13 +51,43 @@ class Assistant:
                 raise Exception(f"Error on data: {got}")
             print("Choices:", ", ".join(got))
 
-    def get_fname_from_args(self, args, index, *subf):
+    def edit_file(self, fname, *a, **k):
+        if not os.getenv("EDITOR"):
+            raise Exception("EDITOR environment variable not set")
+        os.system(f"$EDITOR {fname}")
+
+    def get_arg(self, args, index):
         if index >= len(args):
             raise Exception("Expected name argument")
-        fname = args[index]
+        return args[index]
+
+    def get_fname_from_args(self, args, index, *subf):
+        fname = self.get_arg(args, index)
         return os.path.join(self.data_dir, *subf, fname)
 
+    def act(self, command, args, *a, **k):
+        if command == "priorize":
+            fname = self.get_fname_from_args(args, 0, "priorize")
+            return self.priorize(fname, *a, **k)
+
+        elif command == "edit":
+            cat = self.get_arg(args, 0)
+            fname = self.get_fname_from_args(args, 1, cat)
+            return self.edit_file(fname, *a, **k)
+
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: {} <command> [args]".format(sys.argv[0]))
+        sys.exit(1)
+
+    command = get_command(sys.argv[1])
+    if not command:
+        print(f"Command not found")
+        print("Available commands:")
+        for cmd, data in COMMANDS.items():
+            print("- {}: {}".format(cmd, data["short_help"]))
+        sys.exit(1)
+    args = sys.argv[2:]
+
     assistant = Assistant()
-    # TODO    Argument parser to pass to act
-    assistant.act("priorize", ["persdev"])
+    assistant.act(command, args)
