@@ -106,20 +106,3 @@ class PrioPick:
 # per_session = 0.5
 # per_week = 6
 # picks.print_volume_hours(3, per_session * per_week * 4 * 12)
-
-if __name__ == "__main__":
-    try:
-        fname = sys.argv[1]
-    except IndexError:
-        print("Enter a filename as argument")
-        sys.exit(1)
-    
-    picks = PrioPick()
-    k = picks.import_file(fname)
-
-    picks.print_probas(k)
-    got = picks.pick(k)
-
-    if any([got.count(val) != 1 for val in got]):
-        raise Exception(f"Error on data: {got}")
-    print(got)

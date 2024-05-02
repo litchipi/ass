@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+#-*-encoding:utf-8*-
+
+import os
+import sys
+import random
+
+from lib import priorize
+
+COMMAND_ALIASES = {
+    "priorize": ["p", "prio"],
+}
+
+class Assistant:
+    def __init__(self, data_dir = None):
+        if not data_dir:
+            data_dir = os.path.join(
+                os.path.dirname(os.path.realpath(sys.argv[0])),
+                "data",
+            )
+        self.data_dir = data_dir
+
+    def act(self, command, args, verbose = False):
+        if command == "priorize":
+            fname = self.get_fname_from_args(args, 0, "priorize")
+            pick = priorize.PrioPick()
+            k = pick.import_file(fname)
+            if verbose:
+                pick.print_probas(k)
+            got = pick.pick(k)
+            if any([got.count(val) != 1 for val in got]):
+                raise Exception(f"Error on data: {got}")
+            print("Choices:", ", ".join(got))
+
+    def get_fname_from_args(self, args, index, *subf):
+        if index >= len(args):
+            raise Exception("Expected name argument")
+        fname = args[index]
+        return os.path.join(self.data_dir, *subf, fname)
+
+if __name__ == "__main__":
+    assistant = Assistant()
+    # TODO    Argument parser to pass to act
+    assistant.act("priorize", ["persdev"])
