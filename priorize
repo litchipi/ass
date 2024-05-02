@@ -1,4 +1,8 @@
+#!/usr/bin/env python3
+#-*-encoding:utf-8*-
+
 import os
+import sys
 import random
 
 def compute_cumm_probas(name, weights, k, choices=[]):
@@ -104,8 +108,14 @@ class PrioPick:
 # picks.print_volume_hours(3, per_session * per_week * 4 * 12)
 
 if __name__ == "__main__":
+    try:
+        fname = sys.argv[1]
+    except IndexError:
+        print("Enter a filename as argument")
+        sys.exit(1)
+    
     picks = PrioPick()
-    k = picks.import_file("data")
+    k = picks.import_file(fname)
 
     picks.print_probas(k)
     got = picks.pick(k)
