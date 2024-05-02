@@ -6,6 +6,7 @@ import sys
 import random
 
 from lib import priorize
+from lib import autocomplete
 
 COMMANDS = {
     "priorize": {
@@ -15,6 +16,10 @@ COMMANDS = {
     "edit": {
         "aliases": ["e"],
         "short_help": "Edit a data file contained in the assistant data dir",
+    },
+    "autocomplete": {
+        "aliases": [],
+        "short_help": "Display autocomplete choices",
     },
 }
 
@@ -37,24 +42,41 @@ class Assistant:
         self.data_dir = data_dir
 
     def priorize(self, fname, *a, verbose = False, **k):
-            if not os.path.isfile(fname):
-                print("File does not exist")
-                print(f"It should exist at {fname}")
-                return
+        if not os.path.isfile(fname):
+            print("File does not exist")
+            print(f"It should exist at {fname}")
+            return
 
-            pick = priorize.PrioPick()
-            k = pick.import_file(fname)
-            if verbose:
-                pick.print_probas(k)
-            got = pick.pick(k)
-            if any([got.count(val) != 1 for val in got]):
-                raise Exception(f"Error on data: {got}")
-            print("Choices:", ", ".join(got))
+        pick = priorize.PrioPick()
+        k = pick.import_file(fname)
+        if verbose:
+            pick.print_probas(k)
+        got = pick.pick(k)
+        if any([got.count(val) != 1 for val in got]):
+            raise Exception(f"Error on data: {got}")
+        print("Choices:", ", ".join(got))
 
     def edit_file(self, fname, *a, **k):
         if not os.getenv("EDITOR"):
             raise Exception("EDITOR environment variable not set")
         os.system(f"$EDITOR {fname}")
+
+    def autocomplete(self, args):
+        choices = []
+        argsl = len(args)
+        if argsl == 0:
+            for cmd, data in COMMANDS.iter():
+                choices.append(cmd)
+                choices.extend(data["aliases"])
+        elif argsl == 1:
+            cmd = args[0]
+            choices.extend(autocomplete.complete_command(args[0]))
+        else:    # argsl >= 2
+            cmd = args[0]
+            nargs = argsl - 1
+            choices.extend(autocomplete.complete_command_with_arg(args[0], nargs))
+        print(args, choices)
+        # print(" ".join(choices))
 
     def get_arg(self, args, index):
         if index >= len(args):
@@ -75,6 +97,9 @@ class Assistant:
             fname = self.get_fname_from_args(args, 1, cat)
             return self.edit_file(fname, *a, **k)
 
+        elif command == "autocomplete":
+            self.autocomplete(args)
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: {} <command> [args]".format(sys.argv[0]))
@@ -87,7 +112,7 @@ if __name__ == "__main__":
         for cmd, data in COMMANDS.items():
             print("- {}: {}".format(cmd, data["short_help"]))
         sys.exit(1)
-    args = sys.argv[2:]
+    args = [a for a in sys.argv[2:] if (a != "--") and (a != "") ]
 
     assistant = Assistant()
     assistant.act(command, args)
