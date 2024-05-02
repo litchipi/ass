@@ -5,21 +5,18 @@ import os
 import sys
 import random
 
-from lib import priorize
-from lib import autocomplete
+from lib import *
 
 COMMANDS = {
     "priorize": {
         "aliases": ["p", "prio"],
         "short_help": "Pick things to do based on priorities set",
+        "setup_parser": priorize.setup,
     },
     "edit": {
         "aliases": ["e"],
         "short_help": "Edit a data file contained in the assistant data dir",
-    },
-    "autocomplete": {
-        "aliases": [],
-        "short_help": "Display autocomplete choices",
+        "setup_parser": setup_edit_parser,
     },
 }
 
@@ -61,23 +58,6 @@ class Assistant:
             raise Exception("EDITOR environment variable not set")
         os.system(f"$EDITOR {fname}")
 
-    def autocomplete(self, args):
-        choices = []
-        argsl = len(args)
-        if argsl == 0:
-            for cmd, data in COMMANDS.iter():
-                choices.append(cmd)
-                choices.extend(data["aliases"])
-        elif argsl == 1:
-            cmd = args[0]
-            choices.extend(autocomplete.complete_command(args[0]))
-        else:    # argsl >= 2
-            cmd = args[0]
-            nargs = argsl - 1
-            choices.extend(autocomplete.complete_command_with_arg(args[0], nargs))
-        print(args, choices)
-        # print(" ".join(choices))
-
     def get_arg(self, args, index):
         if index >= len(args):
             raise Exception("Expected name argument")
@@ -89,7 +69,7 @@ class Assistant:
 
     def act(self, command, args, *a, **k):
         if command == "priorize":
-            fname = self.get_fname_from_args(args, 0, "priorize")
+            fname = os.path.join(self.data_dir, "priorize", args.name)
             return self.priorize(fname, *a, **k)
 
         elif command == "edit":
@@ -97,22 +77,7 @@ class Assistant:
             fname = self.get_fname_from_args(args, 1, cat)
             return self.edit_file(fname, *a, **k)
 
-        elif command == "autocomplete":
-            self.autocomplete(args)
-
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: {} <command> [args]".format(sys.argv[0]))
-        sys.exit(1)
-
-    command = get_command(sys.argv[1])
-    if not command:
-        print(f"Command not found")
-        print("Available commands:")
-        for cmd, data in COMMANDS.items():
-            print("- {}: {}".format(cmd, data["short_help"]))
-        sys.exit(1)
-    args = [a for a in sys.argv[2:] if (a != "--") and (a != "") ]
-
+    cliargs = get_args(COMMANDS)
     assistant = Assistant()
-    assistant.act(command, args)
+    assistant.act(get_command(cliargs.command), cliargs)

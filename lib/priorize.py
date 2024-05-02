@@ -106,3 +106,6 @@ class PrioPick:
 # per_session = 0.5
 # per_week = 6
 # picks.print_volume_hours(3, per_session * per_week * 4 * 12)
+
+def setup(parser):
+    parser.add_argument("name", help="Priorities set to use", type=str)
