@@ -44,9 +44,10 @@ class Assistant:
             print(f"It should exist at {fname}")
             return
 
-        pick = priorize.PrioPick()
+        pick = priorize.PrioPick(verbose)
         k = pick.import_file(fname)
         if verbose:
+            print(f"Probabilities for {k} picks:")
             pick.print_probas(k)
         got = pick.pick(k)
         if any([got.count(val) != 1 for val in got]):
@@ -68,16 +69,16 @@ class Assistant:
         return os.path.join(self.data_dir, *subf, fname)
 
     def act(self, command, args, *a, **k):
+        # TODO    Add option to bind to a pomodoro timer
         if command == "priorize":
             fname = os.path.join(self.data_dir, "priorize", args.name)
             return self.priorize(fname, *a, **k)
 
         elif command == "edit":
-            cat = self.get_arg(args, 0)
-            fname = self.get_fname_from_args(args, 1, cat)
+            fname = os.path.join(self.data_dir, args.category, args.name)
             return self.edit_file(fname, *a, **k)
 
 if __name__ == "__main__":
     cliargs = get_args(COMMANDS)
     assistant = Assistant()
-    assistant.act(get_command(cliargs.command), cliargs)
+    assistant.act(get_command(cliargs.command), cliargs, verbose=cliargs.verbose)

@@ -2,13 +2,17 @@ import argparse
 
 # TODO    Add autocompletion with external lib on this
 
+# TODO    Pomodoro timer
+# TODO    Add notes
+
 from . import priorize
 
 def setup_edit_parser(subp):
-    # TODO    Add data to parser
-    # Add choice for category, add choice for name
-    #    With list for autocompletion, but allow to step out of the list for creation
-    pass
+    # TODO    Add existing categories to possible choices
+    subp.add_argument("category", help="Category of the file", type=str)
+
+    # TODO    Add existing names to possible choices
+    subp.add_argument("name", help="File to edit", type=str)
 
 def get_args(commands):
     parser = argparse.ArgumentParser()
@@ -35,16 +39,3 @@ def get_args(commands):
         data["setup_parser"](cmd_parser)
 
     return parser.parse_args()
-    
-    # if len(sys.argv) < 2:
-    #     print("Usage: {} <command> [args]".format(sys.argv[0]))
-    #     sys.exit(1)
-
-    # command = get_command(sys.argv[1])
-    # if not command:
-    #     print(f"Command not found")
-    #     print("Available commands:")
-    #     for cmd, data in COMMANDS.items():
-    #         print("- {}: {}".format(cmd, data["short_help"]))
-    #     sys.exit(1)
-

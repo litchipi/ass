@@ -27,10 +27,11 @@ def compute_cumm_probas(name, weights, k, choices=[]):
     return result
 
 class PrioPick:
-    def __init__(self):
+    def __init__(self, verbose):
         self.name = []
         self.prio = []
         self.picked = []
+        self.verbose = verbose
 
     def add(self, name, prio):
         self.name.append(name)
