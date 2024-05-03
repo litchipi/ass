@@ -7,27 +7,8 @@ import random
 
 from lib import *
 
-COMMANDS = {
-    "priorize": {
-        "aliases": ["p", "prio"],
-        "short_help": "Pick things to do based on priorities set",
-        "setup_parser": priorize.setup,
-    },
-    "edit": {
-        "aliases": ["e"],
-        "short_help": "Edit a data file contained in the assistant data dir",
-        "setup_parser": setup_edit_parser,
-    },
-}
-
-def get_command(raw):
-    if raw in COMMANDS:
-        return raw
-    else:
-        for cmd, data in COMMANDS.items():
-            if raw in data["aliases"]:
-                return cmd
-        return None
+# TODO    Pomodoro timer
+# TODO    Add notes
 
 class Assistant:
     def __init__(self, data_dir = None):
@@ -78,7 +59,10 @@ class Assistant:
             fname = os.path.join(self.data_dir, args.category, args.name)
             return self.edit_file(fname, *a, **k)
 
+        else:
+            raise Exception(f"Command {command} defined but not implemented")
+
 if __name__ == "__main__":
-    cliargs = get_args(COMMANDS)
+    cliargs = cli.get_args()
     assistant = Assistant()
-    assistant.act(get_command(cliargs.command), cliargs, verbose=cliargs.verbose)
+    assistant.act(cli.get_command(cliargs.command), cliargs, verbose=cliargs.verbose)

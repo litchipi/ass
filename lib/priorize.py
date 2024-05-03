@@ -110,3 +110,7 @@ class PrioPick:
 
 def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
+
+def autocomplete(args):
+    # TODO    Autocomplete
+    print("p a")
