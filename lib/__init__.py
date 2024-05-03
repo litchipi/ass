@@ -1,5 +1,5 @@
 import argparse
 
-from . import cli
-from . import priorize
 from . import datastore
+from . import priorize
+from . import cli

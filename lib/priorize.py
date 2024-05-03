@@ -5,7 +5,10 @@ import os
 import sys
 import random
 
-import datastore
+try:
+    from . import datastore
+except ImportError:
+    import datastore
 
 def compute_cumm_probas(name, weights, k, choices=[]):
     sumw = sum(weights.values())

@@ -11,13 +11,8 @@ from lib import *
 # TODO    Add notes
 
 class Assistant:
-    def __init__(self, data_dir = None):
-        if not data_dir:
-            data_dir = os.path.join(
-                os.path.dirname(os.path.realpath(sys.argv[0])),
-                "data",
-            )
-        self.data_dir = data_dir
+    def __init__(self):
+        self.data_dir = datastore.get_data_path()
 
     def priorize(self, fname, *a, verbose = False, **k):
         if not os.path.isfile(fname):

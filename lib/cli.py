@@ -1,5 +1,11 @@
-import priorize
-import datastore
+import argparse
+
+try:
+    from . import priorize
+    from . import datastore
+except ImportError:
+    import priorize
+    import datastore
 
 COMMANDS = {
     "priorize": {
