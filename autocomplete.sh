@@ -1,9 +1,9 @@
-CMD="assistant"
+CMD="ass"
 
 SRC="$(realpath ${BASH_SOURCE[0]})"
 SRC="$(dirname $SRC)"
 
-function _assistant_complete() {
+function _ass_complete() {
     local cur=${COMP_WORDS[COMP_CWORD]}
     local prev=${COMP_WORDS[COMP_CWORD-1]}
 
@@ -13,4 +13,4 @@ function _assistant_complete() {
     return 0
 }
 
-complete -F _assistant_complete "$CMD"
+complete -F _ass_complete "$CMD"
