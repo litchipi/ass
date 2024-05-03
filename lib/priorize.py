@@ -5,6 +5,8 @@ import os
 import sys
 import random
 
+import datastore
+
 def compute_cumm_probas(name, weights, k, choices=[]):
     sumw = sum(weights.values())
     probas = { k:v / sumw for k,v in weights.items() }
@@ -112,5 +114,4 @@ def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
 
 def autocomplete(args):
-    # TODO    Autocomplete
-    print("p a")
+    datastore.autocomplete_datastore(["priorize"] + args)

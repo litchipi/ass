@@ -8,4 +8,4 @@ def setup_edit(subp):
 
 def autocomplete_datastore(args):
     # TODO    Autocomplete datastore
-    print("foo bar")
+    print("foo bar args:{}".format(",".join(args)))

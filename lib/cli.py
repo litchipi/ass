@@ -65,4 +65,4 @@ if __name__ == "__main__":
         command = get_command(args[2])
         if command:
             data = COMMANDS[command]
-            data["autocomplete"](args)
+            data["autocomplete"](args[3:])
