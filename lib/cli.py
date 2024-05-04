@@ -3,9 +3,11 @@ import argparse
 try:
     from . import priorize
     from . import datastore
+    from . import ai
 except ImportError:
     import priorize
     import datastore
+    import ai
 
 COMMANDS = {
     "priorize": {
@@ -20,6 +22,12 @@ COMMANDS = {
         "setup_parser": datastore.setup_edit,
         "autocomplete": datastore.autocomplete_datastore,
     },
+    "aicha": {
+        "aliases": ["a", "ai"],
+        "short_help": "Interact with a LLM AI",
+        "setup_parser": ai.setup,
+        "autocomplete": ai.autocomplete,
+    }
 }
 
 def get_command(raw):

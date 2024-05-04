@@ -1,6 +1,12 @@
 import os
 import sys
 
+def get_cache_dir():
+    data_dir = get_data_path()
+    d = os.path.abspath(os.path.join(data_dir, "..", ".cache"))
+    os.makedirs(d, exist_ok=True)
+    return d
+
 def get_data_path():
     data_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
     comp = data_dir.split("/")[1:]

@@ -1,0 +1,49 @@
+{
+  "to_use": "mixtral-8x7B-instruct-v0.1",
+
+  "models": {
+    "mistral-7b-instruct-v0.2": {
+      "name": "Mistral 7B Instruct v0.2",
+      "url": "https://huggingface.co/jartine/Mistral-7B-Instruct-v0.2-llamafile/resolve/main/mistral-7b-instruct-v0.2.Q4_0.llamafile?download=true",
+      "prefix": "[INST]",
+      "suffix": "[/INST]"
+    },
+
+    "mixtral-8x7B-instruct-v0.1": {
+      "name": "Mixtral 8x7B Instruct v0.1",
+      "url": "https://huggingface.co/jartine/Mixtral-8x7B-Instruct-v0.1-llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M.llamafile?download=true",
+      "prefix": "[INST]",
+      "suffix": "[/INST]"
+    },
+
+    "wizardcoder-13b": {
+      "name": "Wizardcoder 13B",
+      "url": "https://huggingface.co/jartine/wizardcoder-13b-python/resolve/main/wizardcoder-python-13b.llamafile?download=true",
+      "prefix": "",
+      "suffix": ""
+    }
+  },
+
+  "options": {
+    "ctx-size": 512,
+    "batch-size": 512,
+    "top-k": 40,
+    "top-p": 0.9,
+    "min-p": 0.1,
+    "tfs": 1.0,
+    "typical": 1.0,
+    "repeat-last-n": 256,
+    "repeat-penalty": 1.5,
+    "presence-penalty": 0.0,
+    "frequency-penalty": 0.0,
+    "mirostat": 0,
+    "mirostat-lr": 0.1,
+    "mirostat-ent": 5.0,
+    "temp": 0.9,
+    "draft": 32,
+    "sequences": 1,
+    "p-split": 0.1,
+    "grp-attn-n": 1,
+    "grp-attn-w": 512
+  }
+}

@@ -12,6 +12,7 @@ from lib import *
 
 class Assistant:
     def __init__(self):
+        self.cache_dir = datastore.get_cache_dir()
         self.data_dir = datastore.get_data_path()
 
     def priorize(self, fname, *a, verbose = False, **k):
@@ -53,6 +54,11 @@ class Assistant:
         elif command == "edit":
             fname = os.path.join(self.data_dir, args.category, args.name)
             return self.edit_file(fname, *a, **k)
+
+        # TODO    Add command ai, add it to cli commands
+        elif command == "aicha":
+            assistant = ai.AiAssistant(os.path.join(self.cache_dir, "aicha"))
+            return assistant.act(args)
 
         else:
             raise Exception(f"Command {command} defined but not implemented")
