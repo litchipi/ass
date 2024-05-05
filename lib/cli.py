@@ -10,9 +10,9 @@ except ImportError:
     import ai
 
 COMMANDS = {
-    "priorize": {
-        "aliases": ["p", "prio"],
-        "short_help": "Pick things to do based on priorities set",
+    "choose": {
+        "aliases": ["c"],
+        "short_help": "Choose things to do based on priorities set",
         "setup_parser": priorize.setup,
         "autocomplete": priorize.autocomplete,
     },

@@ -47,7 +47,7 @@ class Assistant:
 
     def act(self, command, args, *a, **k):
         # TODO    Add option to bind to a pomodoro timer
-        if command == "priorize":
+        if command == "choose":
             fname = os.path.join(self.data_dir, "priorize", args.name)
             return self.priorize(fname, *a, **k)
 
