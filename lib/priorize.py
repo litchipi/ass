@@ -113,6 +113,22 @@ class PrioPick:
 # per_week = 6
 # picks.print_volume_hours(3, per_session * per_week * 4 * 12)
 
+def act(fname, *a, verbose = False, **k):
+    if not os.path.isfile(fname):
+        print("File does not exist")
+        print(f"It should exist at {fname}")
+        return
+
+    pick = priorize.PrioPick(verbose)
+    k = pick.import_file(fname)
+    if verbose:
+        print(f"Probabilities for {k} picks:")
+        pick.print_probas(k)
+    got = pick.pick(k)
+    if any([got.count(val) != 1 for val in got]):
+        raise Exception(f"Error on data: {got}")
+    print("Choices:", ", ".join(got))
+
 def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
 

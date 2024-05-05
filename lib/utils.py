@@ -32,3 +32,8 @@ def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
             chars[2],
             chars[4],
         ), end="")
+
+def edit_file(fname):
+    if not os.getenv("EDITOR"):
+        raise Exception("EDITOR environment variable not set")
+    os.system(f"$EDITOR {fname}")

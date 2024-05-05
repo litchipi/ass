@@ -9,51 +9,30 @@ from lib import *
 
 # TODO    Pomodoro timer
 # TODO    Add notes
+# TODO    Todo list, separated by categories
+#    For each element on todo list, allow to create sub-todos
+#    Do this indefinitely
+#    For each todo, allow to take notes, to create a pomodoro timer
+
+# TODO    After actions on commands, have a menu display to see possible actions
+#    Anything that forwards to other services
 
 class Assistant:
     def __init__(self):
+        # TODO    Create a class DataStore, get paths from it instead of generate by hand
         self.cache_dir = datastore.get_cache_dir()
         self.data_dir = datastore.get_data_path()
-
-    def priorize(self, fname, *a, verbose = False, **k):
-        if not os.path.isfile(fname):
-            print("File does not exist")
-            print(f"It should exist at {fname}")
-            return
-
-        pick = priorize.PrioPick(verbose)
-        k = pick.import_file(fname)
-        if verbose:
-            print(f"Probabilities for {k} picks:")
-            pick.print_probas(k)
-        got = pick.pick(k)
-        if any([got.count(val) != 1 for val in got]):
-            raise Exception(f"Error on data: {got}")
-        print("Choices:", ", ".join(got))
-
-    def edit_file(self, fname, *a, **k):
-        if not os.getenv("EDITOR"):
-            raise Exception("EDITOR environment variable not set")
-        os.system(f"$EDITOR {fname}")
-
-    def get_arg(self, args, index):
-        if index >= len(args):
-            raise Exception("Expected name argument")
-        return args[index]
-
-    def get_fname_from_args(self, args, index, *subf):
-        fname = self.get_arg(args, index)
-        return os.path.join(self.data_dir, *subf, fname)
 
     def act(self, command, args, *a, **k):
         # TODO    Add option to bind to a pomodoro timer
         if command == "choose":
             fname = os.path.join(self.data_dir, "priorize", args.name)
-            return self.priorize(fname, *a, **k)
+            return priorize.act(fname, *a, **k)
 
         elif command == "edit":
             fname = os.path.join(self.data_dir, args.category, args.name)
-            return self.edit_file(fname, *a, **k)
+            utils.edit_file(fname)
+            return None
 
         elif command == "aicha":
             assistant = ai.AiAssistant(os.path.join(self.cache_dir, "aicha"))
