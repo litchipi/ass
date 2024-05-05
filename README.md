@@ -10,4 +10,3 @@ It allows for multitasking while respecting the priorities scores.
 
 - Pomodoro tracker (on the tasks to perform)
 - Note taking
-- Call Mistral 7B on input given by user
