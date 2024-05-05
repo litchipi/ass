@@ -55,7 +55,6 @@ class Assistant:
             fname = os.path.join(self.data_dir, args.category, args.name)
             return self.edit_file(fname, *a, **k)
 
-        # TODO    Add command ai, add it to cli commands
         elif command == "aicha":
             assistant = ai.AiAssistant(os.path.join(self.cache_dir, "aicha"))
             return assistant.act(args)
