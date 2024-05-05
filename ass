@@ -7,7 +7,6 @@ import random
 
 from lib import *
 
-# TODO    Pomodoro timer
 # TODO    Add notes
 # TODO    Todo list, separated by categories
 #    For each element on todo list, allow to create sub-todos
@@ -36,6 +35,10 @@ class Assistant:
         elif command == "aicha":
             assistant = ai.AiAssistant(self.storage.cache_path("aicha"))
             return assistant.act(args)
+
+        elif command == "pomodoro":
+            p = pomodoro.PomodoroTimer(self.storage.cache_path("pomodoro"), args)
+            return p.start_cli()
 
         else:
             raise Exception(f"Command {command} defined but not implemented")

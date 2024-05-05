@@ -4,10 +4,12 @@ try:
     from . import priorize
     from . import datastore
     from . import ai
+    from . import pomodoro
 except ImportError:
     import priorize
     import datastore
     import ai
+    import pomodoro
 
 COMMANDS = {
     "choose": {
@@ -27,7 +29,13 @@ COMMANDS = {
         "short_help": "Interact with a LLM AI",
         "setup_parser": ai.setup,
         "autocomplete": ai.autocomplete,
-    }
+    },
+    "pomodoro": {
+        "aliases": ["p", "pomo"],
+        "short_help": "Start a pomodoro timer",
+        "setup_parser": pomodoro.setup,
+        "autocomplete": pomodoro.autocomplete,
+    },
 }
 
 def get_command(raw):

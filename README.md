@@ -8,5 +8,4 @@ It allows for multitasking while respecting the priorities scores.
 
 ## TODO
 
-- Pomodoro tracker (on the tasks to perform)
 - Note taking
