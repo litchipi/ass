@@ -31,6 +31,9 @@ def autocomplete_datastore(args):
             if not os.path.isdir(data_dir):
                 return
 
+        if os.path.isfile(os.path.join(data_dir, args[-1])):
+            return
+
         if os.path.isdir(os.path.join(data_dir, args[-1])):
             data_dir = os.path.join(data_dir, args[-1])
         
