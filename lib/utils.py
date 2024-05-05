@@ -1,4 +1,5 @@
 import math
+import os
 
 def sanitize(s):
     s = s.replace("\"", "\\\"").replace("`", "\\`")
@@ -9,10 +10,12 @@ def stream_command_output(cmd):
     print(cmd)
     print(shlex.split(cmd))
 
-def dispbar(nb, sz, tot, size=150, chars="▐▓▒░▌"):
+def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
+    if not size:
+        size = os.get_terminal_size().columns
     nchunks = math.ceil(tot / sz)
     div = nchunks / size
-    nchars = math.ceil(nchunks / div)
+    nchars = math.ceil(nchunks / div) - 2
     nb = int(nb / div) + 1
     if nb < nchars:
         print("{}{}{}{}{}\r".format(
