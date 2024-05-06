@@ -17,6 +17,8 @@ from lib import *
 # TODO    After actions on commands, have a menu display to see possible actions
 #    Anything that forwards to other services
 
+# TODO    Add docgen tool to this
+
 class Assistant:
     def __init__(self):
         # TODO    Create a class DataStore, get paths from it instead of generate by hand
