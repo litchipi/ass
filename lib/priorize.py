@@ -129,6 +129,7 @@ def act(fname, *a, verbose = False, **k):
         raise Exception(f"Error on data: {got}")
     print("Choices:", ", ".join(got))
 
+# TODO    Add option to launch an assistant to create a new prio set
 def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
 
