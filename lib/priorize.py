@@ -119,7 +119,7 @@ def act(fname, *a, verbose = False, **k):
         print(f"It should exist at {fname}")
         return
 
-    pick = priorize.PrioPick(verbose)
+    pick = PrioPick(verbose)
     k = pick.import_file(fname)
     if verbose:
         print(f"Probabilities for {k} picks:")
