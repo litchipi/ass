@@ -16,19 +16,15 @@ def compute_cumm_probas(name, weights, k, choices=[]):
     if k == 1:
         return probas[name]
 
-    result = probas[name]
-    negprob = 1.0 - probas[name]
+    result = probas.pop(name)
     for choice, prob in probas.items():
-        if choice != name:
-            p = compute_cumm_probas(
-                name,
-                { k:v for k, v in weights.items() if k != choice },
-                k-1,
-                choices = choices + [choice]
-            )
-            result += prob * p
-    assert result <= 1.0
-    assert result >= 0.0
+        p = compute_cumm_probas(
+            name,
+            { k:v for k, v in weights.items() if k != choice },
+            k-1,
+            choices = choices + [choice]
+        )
+        result += prob * p
     return result
 
 class PrioPick:
