@@ -36,11 +36,6 @@ The answers do not contain any text not related to the question
 
 import urllib.request
 
-def download_model(fpath):
-    print("\033[?25l", end="")
-    urllib.request.urlretrieve(MODEL["url"], fpath, reporthook=utils.dispbar)
-    print("\033[?25h")
-    os.chmod(fpath, mode=500)
 
 class AiAssistant:
     def __init__(self, data_dir):
@@ -54,7 +49,7 @@ class AiAssistant:
             res = input("Model {} doesn't exist, download it from Github ? [Y/n] "
                 .format(MODEL["name"]))
             if res == "" or res.lower() == "y":
-                download_model(self.model_path)
+                utils.download_file(MODEL["url"], self.model_path)
             else:
                 sys.exit(0)
 

@@ -1,5 +1,7 @@
-import math
 import os
+import sys
+import math
+import urllib
 
 def sanitize(s):
     s = s.replace("\"", "\\\"").replace("`", "\\`")
@@ -11,6 +13,7 @@ def stream_command_output(cmd):
     print(shlex.split(cmd))
 
 def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
+    hide_cursor()
     if not size:
         size = os.get_terminal_size().columns
     nchunks = math.ceil(tot / sz)
@@ -37,3 +40,44 @@ def edit_file(fname):
     if not os.getenv("EDITOR"):
         raise Exception("EDITOR environment variable not set")
     os.system(f"$EDITOR {fname}")
+
+def download_file(url, fpath, mode=400):
+    if os.path.isfile(fpath):
+        raise Exception(f"File {fpath} already exists")
+
+    os.makedirs(os.path.dirname(fpath), exist_ok=True)
+    try:
+        hide_cursor()
+        urllib.request.urlretrieve(url, fpath, reporthook=dispbar)
+        show_cursor()
+    except KeyboardInterrupt:
+        reset_screen()
+        print("Interrupted")
+        os.remove(fpath)
+        sys.exit(1)
+
+    os.chmod(fpath, mode=mode)
+
+def erase_line():
+    print("\r\033[2K", end="")
+
+def hide_cursor():
+    print("\033[?25l", end="")
+
+def show_cursor():
+    print("\033[?25h", end="")
+
+def move_cursor(dir, nb):
+    if dir == "up":
+        print(f"\033[{nb}A", end="")
+    elif dir == "down":
+        print(f"\033[{nb}B", end="")
+    elif dir == "left":
+        print(f"\033[{nb}C", end="")
+    elif dir == "right":
+        print(f"\033[{nb}D", end="")
+    else:
+        raise Exception(f"Direction {dir} not supported")
+
+def reset_screen():
+    print("\033c", end="")
