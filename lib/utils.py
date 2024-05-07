@@ -85,3 +85,10 @@ def move_cursor(dir, nb):
 
 def reset_screen():
     print("\033c", end="")
+
+def yes_no_ask(question, ):
+    input(f"{question} [Y/n]")
+
+def render_time(secs):
+    # TODO display time
+    return f"{secs} secs"
