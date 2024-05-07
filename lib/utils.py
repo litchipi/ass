@@ -12,7 +12,7 @@ def stream_command_output(cmd):
     print(cmd)
     print(shlex.split(cmd))
 
-def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
+def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌", ret=True, end=""):
     hide_cursor()
     if not size:
         size = os.get_terminal_size().columns
@@ -27,7 +27,7 @@ def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
         nb = int(nb * mult) + 1
 
     if nb < nchars:
-        print("{}{}{}{}{}\r".format(
+        print("{}{}{}{}{}".format(
             chars[0],
             chars[1] * (nb - 1),
             chars[2],
@@ -35,12 +35,15 @@ def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
             chars[4],
         ), end="")
     else:
-        print("{}{}{}{}\r".format(
+        print("{}{}{}{}".format(
             chars[0],
             chars[1] * (nchars - 1),
             chars[2],
             chars[4],
         ), end="")
+    if ret:
+        print("\r", end="")
+    print("", end=end)
 
 def download_file(url, fpath, mode=400):
     if os.path.isfile(fpath):
