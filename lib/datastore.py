@@ -1,23 +1,26 @@
 import os
 import sys
 
-def get_cache_dir():
-    data_dir = get_data_path()
-    d = os.path.abspath(os.path.join(data_dir, "..", ".cache"))
-    os.makedirs(d, exist_ok=True)
-    return d
+class Datastore:
+    def __init__(self, subd, root=None):
+        if root is None:
+            self.root = os.path.abspath(
+                os.path.join(os.path.expanduser("~/.local/share"), subd)
+            )
+        os.makedirs(self.root, exist_ok=True)
+        print("Data stored under {}".format(self.root))
 
-def get_data_path():
-    data_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
-    comp = data_dir.split("/")[1:]
-    for n in range(0, len(comp)):
-        gitdir = os.path.join(data_dir, "../" * n, ".git")
-        if os.path.isdir(gitdir):
-            d = os.path.abspath(os.path.join(data_dir, "../" * n, "data"))
-            os.makedirs(d, exist_ok=True)
-            return d
-    raise Exception("Source directory not found, cannot get data path")
-    
+    def cache_path(self, *path):
+        return os.path.join(self.root, "cache", *path)
+
+    def data_path(self, *path):
+        return os.path.join(self.root, "data", *path)
+
+    def edit_data(self, *path):
+        fpath = os.path.join(self.root, "data", *path)
+        if not os.getenv("EDITOR"):
+            raise Exception("EDITOR environment variable not set")
+        os.system(f"$EDITOR {fname}")
 
 def setup_edit(subp):
     subp.add_argument("category", help="Category of the file", type=str)

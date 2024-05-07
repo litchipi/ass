@@ -21,23 +21,20 @@ from lib import *
 
 class Assistant:
     def __init__(self):
-        # TODO    Create a class DataStore, get paths from it instead of generate by hand
-        self.cache_dir = datastore.get_cache_dir()
-        self.data_dir = datastore.get_data_path()
+        self.storage = datastore.Datastore("ass")
 
     def act(self, command, args, *a, **k):
         # TODO    Add option to bind to a pomodoro timer
         if command == "choose":
-            fname = os.path.join(self.data_dir, "priorize", args.name)
+            fname = self.storage.data_path("priorize", args.name)
             return priorize.act(fname, *a, **k)
 
         elif command == "edit":
-            fname = os.path.join(self.data_dir, args.category, args.name)
-            utils.edit_file(fname)
+            self.storage.edit_data(args.category, args.name)
             return None
 
         elif command == "aicha":
-            assistant = ai.AiAssistant(os.path.join(self.cache_dir, "aicha"))
+            assistant = ai.AiAssistant(self.storage.cache_path("aicha"))
             return assistant.act(args)
 
         else:
