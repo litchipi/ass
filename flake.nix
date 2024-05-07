@@ -23,6 +23,11 @@
   in {
     devShells.default = pkgs.mkShell {
       buildInputs = deps;
+      shellHook = ''
+        export PATH="$PATH:${./.}"
+        source ${./.}/autocomplete.sh
+      '';
+
       PYTHONPATH = "${pythonpkg}/${pythonpkg.sitePackages}:$PYTHONPATH";
       LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib$LD_LIBRARY_PATH";
     };
