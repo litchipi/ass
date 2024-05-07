@@ -24,7 +24,7 @@
     devShells.default = pkgs.mkShell {
       buildInputs = deps;
       shellHook = ''
-        export PATH="$PATH:${./.}"
+        export PATH="$PATH:~/.local/bin"
         source ${./.}/autocomplete.sh
       '';
 
