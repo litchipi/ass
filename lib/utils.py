@@ -16,10 +16,16 @@ def dispbar(nb, sz, tot, size=None, chars="▐▓▒░▌"):
     hide_cursor()
     if not size:
         size = os.get_terminal_size().columns
+    nchars = size - 2
+
     nchunks = math.ceil(tot / sz)
-    div = nchunks / size
-    nchars = math.ceil(nchunks / div) - 2
-    nb = int(nb / div) + 1
+    if nchunks >= size:
+        div = nchunks / size
+        nb = int(nb / div) + 1
+    else:
+        mult = size / nchunks
+        nb = int(nb * mult) + 1
+
     if nb < nchars:
         print("{}{}{}{}{}\r".format(
             chars[0],
