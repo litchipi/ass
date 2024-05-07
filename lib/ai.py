@@ -49,7 +49,7 @@ class AiAssistant:
             res = input("Model {} doesn't exist, download it from Github ? [Y/n] "
                 .format(MODEL["name"]))
             if res == "" or res.lower() == "y":
-                utils.download_file(MODEL["url"], self.model_path)
+                utils.download_file(MODEL["url"], self.model_path, mode=500)
             else:
                 sys.exit(0)
 
