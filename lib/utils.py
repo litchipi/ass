@@ -103,7 +103,8 @@ def move_cursor(dir, nb):
         raise Exception(f"Direction {dir} not supported")
 
 def reset_screen():
-    print("\033c", end="")
+    show_cursor()
+    os.system("reset")
 
 def yes_no_ask(question, default_yes=True, else_is_false=True):
     if default_yes:
