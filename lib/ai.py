@@ -46,7 +46,7 @@ class AiAssistant:
         ) + ".llamafile"
 
         if not utils.download_if_not_found(self.model_path, MODEL["url"],
-            "Model {} doesn't exist, download it from Github ?",
+            "Model {} doesn't exist, download it from Github ?".format(MODEL["name"]),
             mode=500,
         ):
             sys.exit(0)
@@ -109,11 +109,11 @@ class AiAssistant:
             history.append((prompt, answer))
             print("")
 
-    def act(self, args):
-        if args.conversation:
+    def act(self, conversation=False, question="", **kwargs):
+        if conversation:
             self.conversation()
-        elif len(args.question) > 0:
-            self.ask(" ".join(args.question))
+        elif len(question) > 0:
+            self.ask(" ".join(question))
         else:
             print(f"Either enter a conversation with {AI_NAME}, or ask a single question")
 

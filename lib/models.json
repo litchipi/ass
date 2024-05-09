@@ -1,5 +1,5 @@
 {
-  "to_use": "mixtral-8x7B-instruct-v0.1",
+  "to_use": "mistral-7b-instruct-v0.2",
 
   "models": {
     "mistral-7b-instruct-v0.2": {
