@@ -67,7 +67,19 @@ def download_file(url, fpath, mode=400):
         os.remove(fpath)
         sys.exit(1)
 
+    erase_line()
     os.chmod(fpath, mode=mode)
+
+def download_if_not_found(fpath, url, not_found_question, **kwargs):
+    if not os.path.isfile(fpath):
+        if yes_no_ask(not_found_question):
+            utils.download_file(url, fpath, **kwargs)
+            utils.erase_line()
+            return True
+        else:
+            return False
+    else:
+        return True
 
 def erase_line():
     print("\r\033[2K", end="")
@@ -93,8 +105,25 @@ def move_cursor(dir, nb):
 def reset_screen():
     print("\033c", end="")
 
-def yes_no_ask(question, ):
-    input(f"{question} [Y/n]")
+def yes_no_ask(question, default_yes=True, else_is_false=True):
+    if default_yes:
+        tail = "[Y/n]"
+    else:
+        tail = "[y/N]"
+    i = input(question + " " + tail)
+    utils.move_cursor("up", 1)
+    utils.erase_line()
+    if i == "":
+        return default_yes
+    elif i.lower() == "y":
+        return True
+    elif i.lower() == "n":
+        return False
+    elif else_is_false:
+        return False
+    else:
+        print("Expected \"y\" or \"n\"")
+        return yes_no_ask(question, default_yes=default_yes, else_is_false=else_is_false)
 
 def render_time(secs):
     # TODO display time

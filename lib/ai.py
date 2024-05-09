@@ -45,13 +45,11 @@ class AiAssistant:
             MODEL["name"].lower().replace(" ", "_")
         ) + ".llamafile"
 
-        if not os.path.isfile(self.model_path):
-            res = input("Model {} doesn't exist, download it from Github ? [Y/n] "
-                .format(MODEL["name"]))
-            if res == "" or res.lower() == "y":
-                utils.download_file(MODEL["url"], self.model_path, mode=500)
-            else:
-                sys.exit(0)
+        if not utils.download_if_not_found(self.model_path, MODEL["url"],
+            "Model {} doesn't exist, download it from Github ?",
+            mode=500,
+        ):
+            sys.exit(0)
 
     def ask(self, prompt, history=[], maxwidth=100):
         if not prompt or prompt == "":
