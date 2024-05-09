@@ -73,8 +73,8 @@ def download_file(url, fpath, mode=400):
 def download_if_not_found(fpath, url, not_found_question, **kwargs):
     if not os.path.isfile(fpath):
         if yes_no_ask(not_found_question):
-            utils.download_file(url, fpath, **kwargs)
-            utils.erase_line()
+            download_file(url, fpath, **kwargs)
+            erase_line()
             return True
         else:
             return False
@@ -112,8 +112,8 @@ def yes_no_ask(question, default_yes=True, else_is_false=True):
     else:
         tail = "[y/N]"
     i = input(question + " " + tail)
-    utils.move_cursor("up", 1)
-    utils.erase_line()
+    move_cursor("up", 1)
+    erase_line()
     if i == "":
         return default_yes
     elif i.lower() == "y":
