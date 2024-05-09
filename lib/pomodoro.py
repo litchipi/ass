@@ -146,7 +146,7 @@ class PomodoroTimer:
             add_t = n
 
         utils.erase_line()
-        print("Time worked:", utils.render_time(self.tot_work_done + add_t))
+        print("Time worked:", utils.render_duration(self.tot_work_done + add_t))
 
         utils.erase_line()
         if self.state == WORK_STATE:

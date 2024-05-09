@@ -126,6 +126,12 @@ def yes_no_ask(question, default_yes=True, else_is_false=True):
         print("Expected \"y\" or \"n\"")
         return yes_no_ask(question, default_yes=default_yes, else_is_false=else_is_false)
 
-def render_time(secs):
-    # TODO display time
-    return f"{secs} secs"
+def render_duration(nbsecs):
+    hours, remainder = divmod(nbsecs, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if hours > 0:
+        return "{:.0f} h {:.0f} min {:.0f} secs".format(hours, minutes, seconds)
+    elif minutes > 0:
+        return "{:.0f} min {:.0f} secs".format(minutes, seconds)
+    else:
+        return "{:.0f} secs".format(seconds)
