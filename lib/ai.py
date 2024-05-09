@@ -129,3 +129,6 @@ def setup(subp):
 
 def autocomplete(args):
     pass
+
+def act(root, **args):
+    return AiAssistant(root).act(**args)

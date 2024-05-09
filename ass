@@ -31,8 +31,7 @@ class Assistant:
             return None
 
         elif command == "aicha":
-            assistant = ai.AiAssistant(self.storage.cache_path("aicha"))
-            return assistant.act(**args)
+            return ai.act(self.storage.cache_path("aicha"), **args)
 
         elif command == "pomodoro":
             p = pomodoro.PomodoroTimer(self.storage.cache_path("pomodoro"), **args)
