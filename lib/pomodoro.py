@@ -55,7 +55,7 @@ class PomodoroTimer:
         self.state = WORK_STATE
         self.tasks = tasklist
         self.task_n = 0
-        self.refresh = min(0.5, self.work / 100)
+        self.refresh = min(0.2, self.work / 100)
         self.newstate_wait = not nowait
         self.notify = not nonotify
         self.tot_work_done = 0
