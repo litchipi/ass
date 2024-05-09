@@ -51,11 +51,9 @@ class PrioPick:
                 line.split(":") for line in f.read().strip().split("\n")
                 if not line.startswith("#") and len(line.strip()) > 0
             ]
-        k = int(data.pop(0)[1])
         data = { v[0].strip(): float(v[1].strip()) for v in data }
         for name, prio in data.items():
             self.add(name, prio)
-        return k
 
     @property
     def weights(self):
@@ -113,14 +111,15 @@ class PrioPick:
 # per_week = 6
 # picks.print_volume_hours(3, per_session * per_week * 4 * 12)
 
-def act(fname, *a, verbose = False, **k):
+def act(fname, pomodoro_cache, *a, verbose = False, **args):
     if not os.path.isfile(fname):
         print("File does not exist")
         print(f"It should exist at {fname}")
         return
 
     pick = PrioPick(verbose)
-    k = pick.import_file(fname)
+    pick.import_file(fname)
+    k = args["nb"]
     if verbose:
         print(f"Probabilities for {k} picks:")
         pick.print_probas(k)
@@ -131,9 +130,13 @@ def act(fname, *a, verbose = False, **k):
 
     print("Choices:", ", ".join(got))
     if utils.yes_no_ask("Start a Pomodoro session with these tasks ?"):
+        work = int(input("How many minutes per work session ? "))
+        pause = int(input("How many minutes per pause ? "))
         p = pomodoro.PomodoroTimer(
-           self.storage.cache_path("pomodoro"),
+           pomodoro_cache,
            tasklist=[ g.capitalize() for g in got ],
+           work=work,
+           pause=pause,
            **args
         )
         p.start_cli()

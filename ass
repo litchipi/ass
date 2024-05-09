@@ -24,7 +24,10 @@ class Assistant:
 
     def act(self, command, **args):
         if command == "choose":
-            return priorize.act(self.storage.data_path("priorize", args["name"]), **args)
+            return priorize.act(
+                self.storage.data_path("priorize", args["name"]),
+                self.storage.cache_path("pomodoro"),
+                **args)
 
         elif command == "edit":
             self.storage.edit_data(args["category"], args["name"])
