@@ -5,7 +5,7 @@ class Datastore:
     def __init__(self, *subd, data_root=None, cache_root=None):
         if data_root is None:
             self.data_root = os.path.abspath(
-                os.path.join(os.path.expanduser("~/.local/share"), subd)
+                os.path.join(os.path.expanduser("~/.local/share"), *subd)
             )
         else:
             self.data_root = data_root
@@ -13,7 +13,7 @@ class Datastore:
 
         if cache_root is None:
             self.cache_root = os.path.abspath(
-                os.path.join(os.path.expanduser("~/.cache"), subd)
+                os.path.join(os.path.expanduser("~/.cache"), *subd)
             )
         else:
             self.cache_root = cache_root
