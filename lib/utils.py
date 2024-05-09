@@ -54,8 +54,15 @@ def download_file(url, fpath, mode=400):
         hide_cursor()
         urllib.request.urlretrieve(url, fpath, reporthook=dispbar)
         show_cursor()
+    except Exception as err:
+        print("")
+        show_cursor()
+        print(f"Error while downloading {fpath}")
+        print(err)
+        sys.exit(1)
     except KeyboardInterrupt:
-        reset_screen()
+        print("")
+        show_cursor()
         print("Interrupted")
         os.remove(fpath)
         sys.exit(1)
