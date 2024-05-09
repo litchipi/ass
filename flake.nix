@@ -24,8 +24,8 @@
     devShells.default = pkgs.mkShell {
       buildInputs = deps;
       shellHook = ''
-        export PATH="$PATH:~/.local/bin"
-        source ${./.}/autocomplete.sh
+        export PATH="$PATH:$(realpath ./)"
+        source ./autocomplete.sh
       '';
 
       PYTHONPATH = "${pythonpkg}/${pythonpkg.sitePackages}:$PYTHONPATH";

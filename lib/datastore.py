@@ -2,21 +2,15 @@ import os
 import sys
 
 class Datastore:
-    def __init__(self, *subd, data_root=None, cache_root=None):
-        if data_root is None:
-            self.data_root = os.path.abspath(
-                os.path.join(os.path.expanduser("~/.local/share"), *subd)
-            )
-        else:
-            self.data_root = data_root
+    def __init__(self, *subd):
+        self.data_root = os.path.abspath(
+            os.path.join(os.path.expanduser("~/.local/share"), *subd)
+        )
         os.makedirs(self.data_root, exist_ok=True)
 
-        if cache_root is None:
-            self.cache_root = os.path.abspath(
-                os.path.join(os.path.expanduser("~/.cache"), *subd)
-            )
-        else:
-            self.cache_root = cache_root
+        self.cache_root = os.path.abspath(
+            os.path.join(os.path.expanduser("~/.cache"), *subd)
+        )
         os.makedirs(self.cache_root, exist_ok=True)
 
     def cache_path(self, *path):
@@ -35,7 +29,8 @@ def setup_edit(subp):
     subp.add_argument("name", help="File to edit", type=str)
 
 def autocomplete_datastore(args):
-    data_dir = get_data_path()
+    datastore = Datastore("ass")
+    data_dir = datastore.data_root
     if len(args) >= 1:
         for arg in args[:-1]:
             data_dir = os.path.join(data_dir, arg)
