@@ -123,7 +123,7 @@ def act(fname, *a, verbose = False, **k):
     got = pick.pick(k)
     if any([got.count(val) != 1 for val in got]):
         raise Exception(f"Error on data: {got}")
-    print("Choices:", ", ".join(got))
+    return got
 
 # TODO    Add option to launch an assistant to create a new prio set
 def setup(parser):

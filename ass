@@ -22,11 +22,18 @@ class Assistant:
     def __init__(self):
         self.storage = datastore.Datastore("ass")
 
-        # TODO    Add option to bind to a pomodoro timer
     def act(self, command, *a, **k):
         if command == "choose":
             fname = self.storage.data_path("priorize", args["name"])
-            return priorize.act(fname, *a, **k)
+            got = priorize.act(fname, *a, **k)
+            print("Choices:", ", ".join(got))
+            if utils.yes_no_ask("Start a Pomodoro session with these tasks ?"):
+                p = pomodoro.PomodoroTimer(
+                   self.storage.cache_path("pomodoro"),
+                   tasklist=[ g.capitalize() for g in got ],
+                   **args
+                )
+                p.start_cli()
 
         elif command == "edit":
             self.storage.edit_data(args["category"], args["name"])
