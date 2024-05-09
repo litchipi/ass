@@ -6,8 +6,12 @@ import sys
 import random
 
 try:
+    from . import utils
+    from . import pomodoro
     from . import datastore
 except ImportError:
+    import utils
+    import pomodoro
     import datastore
 
 def compute_cumm_probas(name, weights, k, choices=[]):
@@ -120,12 +124,21 @@ def act(fname, *a, verbose = False, **k):
     if verbose:
         print(f"Probabilities for {k} picks:")
         pick.print_probas(k)
+
     got = pick.pick(k)
     if any([got.count(val) != 1 for val in got]):
         raise Exception(f"Error on data: {got}")
-    return got
 
 # TODO    Add option to launch an assistant to create a new prio set
+    print("Choices:", ", ".join(got))
+    if utils.yes_no_ask("Start a Pomodoro session with these tasks ?"):
+        p = pomodoro.PomodoroTimer(
+           self.storage.cache_path("pomodoro"),
+           tasklist=[ g.capitalize() for g in got ],
+           **args
+        )
+        p.start_cli()
+
 def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
 

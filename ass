@@ -22,18 +22,9 @@ class Assistant:
     def __init__(self):
         self.storage = datastore.Datastore("ass")
 
-    def act(self, command, *a, **k):
+    def act(self, command, **args):
         if command == "choose":
-            fname = self.storage.data_path("priorize", args["name"])
-            got = priorize.act(fname, *a, **k)
-            print("Choices:", ", ".join(got))
-            if utils.yes_no_ask("Start a Pomodoro session with these tasks ?"):
-                p = pomodoro.PomodoroTimer(
-                   self.storage.cache_path("pomodoro"),
-                   tasklist=[ g.capitalize() for g in got ],
-                   **args
-                )
-                p.start_cli()
+            return priorize.act(self.storage.data_path("priorize", args["name"]), **args)
 
         elif command == "edit":
             self.storage.edit_data(args["category"], args["name"])
