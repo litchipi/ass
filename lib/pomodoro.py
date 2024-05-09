@@ -22,14 +22,14 @@ DEFAULT_MUSICS = {
 DEFAULT_ICON = "https://inlucro.org/wp-content/uploads/2016/02/pomodoro.png"
 
 class PomodoroTimer:
-    def __init__(self, datapath, args, tasklist=[]):
+    def __init__(self, datapath, tasklist=[], nomusic=False, nonotify=False, nowait=False, **args):
         self.data_dir = datapath
 
         self.icon = os.path.join(self.data_dir, "icon.png")
         if not os.path.isfile(self.icon):
             utils.download_file(DEFAULT_ICON, self.icon)
 
-        self.music = not args.nomusic
+        self.music = not nomusic
         if self.music:
             self.work_music = os.path.join(self.data_dir, "work_finished.mp3")
             if not utils.download_if_not_found(
@@ -50,14 +50,14 @@ class PomodoroTimer:
                 print("Notification music disabled")
                 self.music = False
 
-        self.work = 5 #args.work * 60
-        self.pause = 5 # args.pause * 60
+        self.work = args["work"] * 60
+        self.pause = args["pause"] * 60
         self.state = WORK_STATE
         self.tasks = tasklist
         self.task_n = 0
         self.refresh = min(0.5, self.work / 100)
-        self.newstate_wait = not args.nowait
-        self.notify = not args.nonotify
+        self.newstate_wait = not nowait
+        self.notify = not nonotify
         self.tot_work_done = 0
 
         self.bus = SessionBus().get(".Notifications")

@@ -22,22 +22,22 @@ class Assistant:
     def __init__(self):
         self.storage = datastore.Datastore("ass")
 
-    def act(self, command, args, *a, **k):
         # TODO    Add option to bind to a pomodoro timer
+    def act(self, command, *a, **k):
         if command == "choose":
-            fname = self.storage.data_path("priorize", args.name)
+            fname = self.storage.data_path("priorize", args["name"])
             return priorize.act(fname, *a, **k)
 
         elif command == "edit":
-            self.storage.edit_data(args.category, args.name)
+            self.storage.edit_data(args["category"], args["name"])
             return None
 
         elif command == "aicha":
             assistant = ai.AiAssistant(self.storage.cache_path("aicha"))
-            return assistant.act(args)
+            return assistant.act(**args)
 
         elif command == "pomodoro":
-            p = pomodoro.PomodoroTimer(self.storage.cache_path("pomodoro"), args)
+            p = pomodoro.PomodoroTimer(self.storage.cache_path("pomodoro"), **args)
             return p.start_cli()
 
         else:
@@ -45,5 +45,9 @@ class Assistant:
 
 if __name__ == "__main__":
     cliargs = cli.get_args()
+
+    args = vars(cliargs).copy()
+    del args["command"]
+
     assistant = Assistant()
-    assistant.act(cli.get_command(cliargs.command), cliargs, verbose=cliargs.verbose)
+    assistant.act(cli.get_command(cliargs.command), **args)
