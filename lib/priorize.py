@@ -129,7 +129,6 @@ def act(fname, *a, verbose = False, **k):
     if any([got.count(val) != 1 for val in got]):
         raise Exception(f"Error on data: {got}")
 
-# TODO    Add option to launch an assistant to create a new prio set
     print("Choices:", ", ".join(got))
     if utils.yes_no_ask("Start a Pomodoro session with these tasks ?"):
         p = pomodoro.PomodoroTimer(
@@ -141,6 +140,8 @@ def act(fname, *a, verbose = False, **k):
 
 def setup(parser):
     parser.add_argument("name", help="Priorities set to use", type=str)
+    parser.add_argument("nb", help="Number of picks to make", type=int)
+    parser.add_argument("--create", "-c", help="Create a new list", action="store_true")
 
 def autocomplete(args):
     datastore.autocomplete_datastore(["priorize"] + args)
