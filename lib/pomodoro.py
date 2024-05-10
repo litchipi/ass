@@ -173,9 +173,11 @@ def setup(subp):
     subp.add_argument("--nowait", "-n", help="Do not wait when a new state starts", action="store_true")
     subp.add_argument("--nonotify", "-s", help="Do not notify when a state finishes", action="store_true")
     subp.add_argument("--nomusic", "-m", help="Do not use a music when a state finishes", action="store_true")
+    subp.add_argument("task", help="Task to add to the list", nargs="*")
 
 def autocomplete(args):
     pass
 
 def act(root, **args):
+    args["tasklist"] = [t.capitalize() for t in args.pop("task")]
     return PomodoroTimer(root, **args).start_cli()
